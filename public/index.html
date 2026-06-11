@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>MarketMind</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --primary:#6c3bff;--primary-dark:#4e22e0;--primary-light:#ede8ff;--primary-pale:#f5f2ff;
+  --accent:#ff6b35;--accent-light:#fff0eb;
+  --gold:#f5b942;--gold-dark:#d4941a;
+  --green:#22c55e;--red:#ef4444;
+  --bg:#f4f3f8;--white:#fff;
+  --text:#16142b;--text-mid:#5a587a;--text-light:#a09ebb;
+  --border:#e8e6f0;
+  --shadow:0 2px 12px rgba(108,59,255,.10);
+  --shadow-md:0 6px 28px rgba(108,59,255,.16);
+  --r:14px;--r-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);display:flex;flex-direction:column;align-items:center;min-height:100vh;overflow-x:hidden;}
+ 
+/* ── PAGE ── */
+.page{width:100%;max-width:480px;background:var(--white);min-height:100vh;display:none;flex-direction:column;padding-bottom:72px;animation:fadeUp .2s ease;}
+.page.active{display:flex;}
+.page.auth{padding-bottom:0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+ 
+/* ── AUTH ── */
+.auth-wrap{padding:0 24px 40px;background:linear-gradient(160deg,#f0ebff 0%,#fff 50%);min-height:100vh;}
+.auth-top{display:flex;align-items:center;padding-top:16px;min-height:52px;}
+.back-btn{background:none;border:none;cursor:pointer;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--primary);transition:background .15s;}
+.back-btn:hover{background:var(--primary-light);}
+.back-btn svg{width:22px;height:22px;fill:currentColor;}
+ 
+.logo-area{text-align:center;padding:28px 0 24px;}
+.logo-mark{width:74px;height:74px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:22px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(108,59,255,.35);margin-bottom:14px;}
+.logo-mark svg{width:40px;height:40px;fill:white;}
+.logo-name{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;}
+.logo-name span{color:var(--primary);}
+.logo-ruc{font-size:11px;color:var(--text-light);margin-top:3px;}
+ 
+.auth-heading{margin-bottom:20px;}
+.auth-heading h2{font-size:22px;font-weight:700;color:var(--text);}
+.auth-heading p{font-size:13px;color:var(--text-light);margin-top:3px;}
+ 
+.field-lbl{font-size:11px;font-weight:600;color:var(--text-mid);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 6px;}
+.input-row{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--white);height:50px;padding:0 14px;transition:border-color .2s,box-shadow .2s;}
+.input-row:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(108,59,255,.1);}
+.input-pfx{font-size:14px;font-weight:600;color:var(--primary);margin-right:10px;padding-right:10px;border-right:1.5px solid var(--border);white-space:nowrap;}
+.input-row input, .input-row select{border:none;outline:none;flex:1;font-size:15px;color:var(--text);background:transparent;font-family:inherit;}
+.input-row select{cursor:pointer; -webkit-appearance:none;}
+.input-row input::placeholder{color:var(--text-light);}
+ 
+.btn-main{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border:none;width:100%;height:50px;border-radius:var(--r-sm);font-size:16px;font-weight:700;cursor:pointer;margin-top:22px;box-shadow:0 4px 18px rgba(108,59,255,.35);transition:transform .1s,opacity .15s;font-family:inherit;}
+.btn-main:active{transform:scale(.98);opacity:.9;}
+.auth-link{text-align:center;margin-top:18px;font-size:14px;color:var(--text-light);}
+.auth-link a{color:var(--primary);font-weight:600;cursor:pointer;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div id="login-view" class="page auth active">
+<div class="auth-wrap">
+  <div class="auth-top"></div>
+  <div class="logo-area">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+    </div>
+    <div class="logo-name">Market<span>Mind</span></div>
+    <div class="logo-ruc">RUC 24934823975</div>
+  </div>
+  <div class="auth-heading"><h2>Iniciar sesión</h2><p>Bienvenido de vuelta</p></div>
+  
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="field-lbl">Teléfono</div>
+    <div class="input-row">
+      <span class="input-pfx">🇵🇪 +51</span>
+      <input type="tel" id="loginPhone" placeholder="902961967" required>
+    </div>
+    <div class="field-lbl">Contraseña</div>
+    <div class="input-row">
+      <input type="password" id="loginPass" placeholder="••••••••" required>
+    </div>
+    <button type="submit" class="btn-main">Ingresar</button>
+  </form>
+  <div class="auth-link">¿Sin cuenta? <a onclick="alert('Registro en desarrollo')">Regístrate aquí</a></div>
+</div>
+</div>
+
+<script>
+// 🚀 LÓGICA DE INICIO DE SESIÓN CONECTADA AL SERVIDOR
+function handleLogin(event) {
+    event.preventDefault();
+
+    const telefonoIngresado = document.getElementById('loginPhone').value;
+    const contrasenaIngresada = document.getElementById('loginPass').value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            telefono: telefonoIngresado,
+            contrasena: contrasenaIngresada
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // Guardamos datos en el navegador para usarlos después
+            localStorage.setItem('nombreUsuario', data.nombre);
+            localStorage.setItem('telefonoUsuario', data.telefono);
+
+            alert('¡Bienvenido ' + data.nombre + '!');
+            
+            // Redirección automática al panel que crearemos en el paso 3
+            window.location.href = 'admin.html';
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(err => {
+        console.error("Error en el login:", err);
+        alert("Hubo un problema al conectar con el servidor.");
+    });
+}
+</script>
+</body>
+</html>
