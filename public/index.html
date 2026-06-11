@@ -655,6 +655,44 @@ function logout() { showView('login-view'); }
 function showToast(m) { const t = document.getElementById('toast-msg'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
 function copyText(text) { navigator.clipboard.writeText(text).then(() => showToast('📋 Copiado al portapapeles')); }
 function selectPay(e) {}
+<script>
+// 🚀 LÓGICA DE INICIO DE SESIÓN CORREGIDA
+function handleLogin(event) {
+    event.preventDefault(); // Evita que la página se recargue sola
+
+    // 1. Capturamos lo que el usuario escribió en las casillas en ese momento
+    const telefonoIngresado = document.getElementById('loginPhone').value;
+    const contrasenaIngresada = document.getElementById('loginPass').value;
+
+    // 2. Enviamos los datos a tu servidor en Render
+    fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            telefono: telefonoIngresado,
+            contrasena: contrasenaIngresada
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // 3. ¡LA CLAVE! Guardamos el nombre y teléfono REALES en la memoria del navegador
+            localStorage.setItem('nombreUsuario', data.nombre);
+            localStorage.setItem('telefonoUsuario', data.telefono);
+
+            alert('¡Bienvenido ' + data.nombre + '!');
+            
+            // 4. Lo mandamos automáticamente a tu otra página del panel de administración
+            window.location.href = 'admin.html';
+        } else {
+            alert(data.message); // Si se equivoca, avisa: "Número o contraseña incorrectos"
+        }
+    })
+    .catch(err => {
+        console.error("Error en el login:", err);
+        alert("Hubo un problema al conectar con el servidor.");
+    });
+}
 </script>
 </body>
 </html>
